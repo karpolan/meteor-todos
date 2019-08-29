@@ -1,0 +1,37 @@
+{
+  "name": "meteor-todos",
+  "private": true,
+  "version": "0.1.1",
+  "description": "Simple Todos application using Meteor and React",
+  "author": "Anton Karpenko <i@karpolan.com> (https://karpolan.com)",
+  "homepage": "https://meteor-todos.karpolan.com",
+  "keywords": [
+    "meteor",
+    "react",
+    "todo",
+    "sample",
+    "demo",
+    "karpolan"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karpolan/meteor-todos"
+  },
+  "scripts": {
+    "start": "meteor run",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.3.4",
+    "meteor-node-stubs": "^0.4.1"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.js",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js"
+  }
+}
