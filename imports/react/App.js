@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 import { Tasks } from '../api/tasks.js';
 import Task from './Task.js';
 
-// App component - represents the whole app
+/**
+ * Represents the whole app
+ */
 class App extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
