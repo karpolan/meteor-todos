@@ -22,6 +22,7 @@ class Task extends Component {
 
   render() {
     const { task } = this.props;
+    const userName = task.username ? task.username : null;
 
     // Give tasks a different className when they are checked off, so that we can style them nicely in CSS
     const taskClassName = task.checked ? 'checked' : '';
@@ -31,10 +32,11 @@ class Task extends Component {
         <button className="delete" onClick={this.deleteTask}>
           &times;
         </button>
-
         <input type="checkbox" readOnly checked={!!task.checked} onClick={this.toggleTask} />
-
-        <span className="text">{task.text}</span>
+        <span className="text">
+          {userName && <strong>{userName}: </strong>}
+          {task.text}
+        </span>
       </li>
     );
   }

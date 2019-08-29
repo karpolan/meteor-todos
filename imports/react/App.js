@@ -1,9 +1,12 @@
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Tasks } from '../api/tasks.js';
 import Task from './Task.js';
+import AccountsUiWrapper from './AccountsUiWrapper.js';
 
 /**
  * Represents the whole app
@@ -17,6 +20,15 @@ class App extends Component {
     };
   }
 
+  addTask(text) {
+    Tasks.insert({
+      text,
+      createdAt: new Date(), // current time
+      owner: Meteor.userId(), // _id of logged in user
+      username: Meteor.user().username, // username of logged in user
+    });
+  }
+
   toggleHideCompleted = (event) => {
     this.setState({
       hideCompleted: !this.state.hideCompleted,
@@ -25,15 +37,10 @@ class App extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-
     // Get input value
     const inputText = event.target[0];
     const text = inputText.value.trim();
-    Tasks.insert({
-      text,
-      createdAt: new Date(), // current time
-    });
-
+    this.addTask(text);
     // Clear old value
     inputText.value = '';
   };
@@ -44,12 +51,7 @@ class App extends Component {
     // Find the text field via the React ref
     const textInput = ReactDOM.findDOMNode(this.refs.textInput);
     const text = textInput.value.trim();
-
-    Tasks.insert({
-      text,
-      createdAt: new Date(), // current time
-    });
-
+    this.addTask(text);
     // Clear form
     textInput.value = '';
   };
@@ -74,7 +76,7 @@ class App extends Component {
   }
 
   render() {
-    const { tasks, incompleteCount } = this.props;
+    const { tasks, incompleteCount, currentUser } = this.props;
     const { hideCompleted } = this.state;
 
     return (
@@ -87,9 +89,13 @@ class App extends Component {
             Hide Completed Tasks
           </label>
 
-          <form className="new-task" onSubmit={this.handleSubmit}>
-            <input type="text" ref="textInput" placeholder="Type to add new tasks" />
-          </form>
+          <AccountsUiWrapper />
+
+          {currentUser ? (
+            <form className="new-task" onSubmit={this.handleSubmit}>
+              <input type="text" ref="textInput" placeholder="Type to add new tasks" />
+            </form>
+          ) : null}
         </header>
 
         <ul>{this.renderTasks(tasks, hideCompleted)}</ul>
@@ -102,6 +108,7 @@ const AppWithTracker = withTracker(() => {
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+    currentUser: Meteor.user(),
   };
 })(App);
 
