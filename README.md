@@ -18,3 +18,7 @@ Launches the test runner using [Mocha](https://mochajs.org/).
 ### `npm run visualize`
 
 Start production version of the projext shows the visualization graph over it.
+
+## Deployed to Heroku
+
+Using [Meteor Buildpack Horse](https://github.com/AdmitHub/meteor-buildpack-horse)

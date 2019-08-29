@@ -8,6 +8,8 @@ import { Tasks } from '../api/tasks.js';
 import Task from './Task.js';
 import AccountsUiWrapper from './AccountsUiWrapper.js';
 
+import packageJson from '../../package.json';
+
 /**
  * Represents the whole app
  */
@@ -86,24 +88,41 @@ class App extends Component {
 
     return (
       <div className="container">
-        <header>
-          <h1>Todo List ({incompleteCount})</h1>
+        <div className="content-without-footer">
+          <header>
+            <h1>Todo List ({incompleteCount})</h1>
 
-          <label className="hide-completed">
-            <input type="checkbox" readOnly checked={hideCompleted} onClick={this.toggleHideCompleted} />
-            Hide Completed Tasks
-          </label>
+            <label className="hide-completed">
+              <input type="checkbox" readOnly checked={hideCompleted} onClick={this.toggleHideCompleted} />
+              Hide Completed Tasks
+            </label>
 
-          <AccountsUiWrapper />
+            <AccountsUiWrapper />
 
-          {currentUser ? (
-            <form className="new-task" onSubmit={this.handleSubmit}>
-              <input type="text" ref="textInput" placeholder="Type to add new tasks" />
-            </form>
-          ) : null}
-        </header>
-
-        <ul>{this.renderTasks(tasks, hideCompleted, currentUser)}</ul>
+            {currentUser ? (
+              <form className="new-task" onSubmit={this.handleSubmit}>
+                <input type="text" ref="textInput" placeholder="Type to add new tasks" />
+              </form>
+            ) : null}
+          </header>
+          <div className="content">
+            <ul>{this.renderTasks(tasks, hideCompleted, currentUser)}</ul>
+          </div>
+        </div>
+        <footer>
+          <p>
+            <a href="https://github.com/karpolan/meteor-todos" target="_blank" rel="noopener noreferrer">
+              {packageJson.name.toUpperCase()}
+            </a>{' '}
+            ver: {packageJson.version}
+          </p>
+          <p>
+            Created by{' '}
+            <a href="https://websites.karpolan.com/" target="_blank" rel="noopener noreferrer">
+              KARPOLAN
+            </a>
+          </p>
+        </footer>
       </div>
     );
   }
