@@ -13,7 +13,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ### `npm test`
 
-Launches the test runner using [Mocha](https://mochajs.org/). The port 3000 should be free for these tests.
+Launches the test runner using [Mocha](https://mochajs.org/).
 
 ### `npm run visualize`
 
