@@ -4,7 +4,7 @@
   "version": "0.3.5",
   "description": "Simple Todos application using Meteor and React",
   "author": "Anton Karpenko <i@karpolan.com> (https://karpolan.com)",
-  "homepage": "https://meteor-todos.herokuapp.com/",
+  "homepage": "https://meteor-todos.herokuapp.com",
   "keywords": [
     "meteor",
     "react",
