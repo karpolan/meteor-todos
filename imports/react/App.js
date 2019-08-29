@@ -65,14 +65,19 @@ class App extends Component {
    * @param {array} tasks - list of task to filter and render.
    * @param {bool} hideCompleted - flag to not show the complete tasks.
    */
-  renderTasks(tasks, hideCompleted) {
+  renderTasks(tasks, hideCompleted, currentUser) {
     let filteredTasks = [];
     if (hideCompleted) {
       filteredTasks = tasks.filter((task) => !task.checked);
     } else {
       filteredTasks = tasks;
     }
-    return filteredTasks.map((task) => <Task key={task._id} task={task} />);
+
+    return filteredTasks.map((task) => {
+      const currentUserId = currentUser && currentUser._id;
+      const showPrivateButton = task.owner === currentUserId;
+      return <Task key={task._id} task={task} showPrivateButton={showPrivateButton} />;
+    });
   }
 
   render() {
@@ -98,13 +103,15 @@ class App extends Component {
           ) : null}
         </header>
 
-        <ul>{this.renderTasks(tasks, hideCompleted)}</ul>
+        <ul>{this.renderTasks(tasks, hideCompleted, currentUser)}</ul>
       </div>
     );
   }
 }
 
 const AppWithTracker = withTracker(() => {
+  Meteor.subscribe('tasks');
+
   return {
     tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
     incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),

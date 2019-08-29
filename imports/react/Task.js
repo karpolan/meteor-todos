@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
 import React, { Component } from 'react';
+import clsx from 'clsx';
 
 import { Tasks } from '../api/tasks.js';
 
@@ -26,12 +27,21 @@ class Task extends Component {
     // Tasks.remove(task._id);
   };
 
-  render() {
+  togglePrivate = (event) => {
     const { task } = this.props;
+    // console.log('deleteTask()', task);
+    Meteor.call('tasks.setPrivate', task._id, !task.private);
+  };
+
+  render() {
+    const { task, showPrivateButton } = this.props;
     const userName = task.username ? task.username : null;
 
     // Give tasks a different className when they are checked off, so that we can style them nicely in CSS
-    const taskClassName = task.checked ? 'checked' : '';
+    const taskClassName = clsx({
+      checked: task.checked,
+      private: task.private,
+    });
 
     return (
       <li className={taskClassName}>
@@ -39,6 +49,13 @@ class Task extends Component {
           &times;
         </button>
         <input type="checkbox" readOnly checked={!!task.checked} onClick={this.toggleTask} />
+
+        {showPrivateButton && (
+          <button className="toggle-private" onClick={this.togglePrivate}>
+            {task.private ? 'Private' : 'Public'}
+          </button>
+        )}
+
         <span className="text">
           {userName && <strong>{userName}: </strong>}
           {task.text}
