@@ -21,12 +21,13 @@ class App extends Component {
   }
 
   addTask(text) {
-    Tasks.insert({
-      text,
-      createdAt: new Date(), // current time
-      owner: Meteor.userId(), // _id of logged in user
-      username: Meteor.user().username, // username of logged in user
-    });
+    Meteor.call('tasks.insert', text);
+    // Tasks.insert({
+    //   text,
+    //   createdAt: new Date(), // current time
+    //   owner: Meteor.userId(), // _id of logged in user
+    //   username: Meteor.user().username, // username of logged in user
+    // });
   }
 
   toggleHideCompleted = (event) => {
@@ -47,7 +48,6 @@ class App extends Component {
 
   handleSubmitUsingRefs = (event) => {
     event.preventDefault();
-
     // Find the text field via the React ref
     const textInput = ReactDOM.findDOMNode(this.refs.textInput);
     const text = textInput.value.trim();

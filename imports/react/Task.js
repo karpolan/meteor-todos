@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+
 import React, { Component } from 'react';
 
 import { Tasks } from '../api/tasks.js';
@@ -9,15 +11,19 @@ class Task extends Component {
   toggleTask = (event) => {
     const { task } = this.props;
     // console.log('toggleTask()', task);
-    Tasks.update(task._id, {
-      $set: { checked: !task.checked },
-    });
+    Meteor.call('tasks.setChecked', task._id, !task.checked);
+
+    // Tasks.update(task._id, {
+    //   $set: { checked: !task.checked },
+    // });
   };
 
   deleteTask = (event) => {
     const { task } = this.props;
     // console.log('deleteTask()', task);
-    Tasks.remove(task._id);
+    Meteor.call('tasks.remove', task._id);
+
+    // Tasks.remove(task._id);
   };
 
   render() {
